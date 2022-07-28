@@ -48,12 +48,15 @@ public class CompteurDeScoreTennis {
         } else if (joueur.getPoint() == 40) {
             // si je le joueur a 40 points et que l'adversaire a moins de 40 points => +1 jeu pour le joueur
             if (adversaire.getPoint() < 40) {
-                joueur.setJeux(joueur.getJeux()+1);
+                joueur.setJeux(joueur.getJeux() + 1);
+                gestionGainDeJeux(partie);
+
             }
             // si le joueur a 40 point + un avantage et que l'adversaire a aussi 40 points => +1 jeux pour le joueur
             else if (adversaire.getPoint() == 40) {
                 if (joueur.isAvantage()) {
-                    joueur.setJeux(joueur.getJeux()+1);
+                    joueur.setJeux(joueur.getJeux() + 1);
+                    gestionGainDeJeux(partie);
                 }
                 // si le joueur a 40 pts sans avantage et que l'adversaire a aussi 40 pts => avantage =true pour la joueur
                 if (!joueur.isAvantage()) {
@@ -68,9 +71,28 @@ public class CompteurDeScoreTennis {
     }
 
 
-    public void gestionAvantage(Joueur joueur) {
-        joueur.setAvantage(true);
+    public void remiseAZeroPts(Partie partie) {
+        partie.getJoueur1().setPoint(0);
+        partie.getJoueur2().setPoint(0);
     }
+
+    public void remiseAZeroAvantage(Partie partie) {
+        partie.getJoueur1().setAvantage(false);
+        partie.getJoueur2().setAvantage(false);
+    }
+
+    public void gestionGainDeJeux(Partie partie) {
+        remiseAZeroPts(partie);
+        remiseAZeroAvantage(partie);
+
+        if (partie.getJoueur1().getJeux() == 6 && partie.getJoueur2().getJeux() < 5) {
+            partie.getJoueur1().setSet(partie.getJoueur1().getSet() + 1);
+        }
+        else if(partie.getJoueur2().getJeux() == 6 && partie.getJoueur1().getJeux() < 5){
+            partie.getJoueur2().setSet(partie.getJoueur2().getSet() + 1);
+        }
+    }
+
 
 
 }
